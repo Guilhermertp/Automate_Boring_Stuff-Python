@@ -1,0 +1,83 @@
+#first install the module if not installed
+pip install pypdf2
+
+
+****************Reading one PDF file*****************************
+#import the module
+import PyPDF2
+
+#using pdf from https://autbor.com/meetingminutes1.pdf
+
+import os
+
+#change the current directory to the one where i have my pdf file
+os.chdir('C:\\Users\guilh\\Udemy courses\\1_Automate-Boring-Python\\4_Excel, Word, and PDF\\44. Reading and Editing PDFs')
+
+#check the current directory
+os.getcwd()
+
+#open the pdf file, the rb is read in binary mode since pd files are binary files
+
+pdfFile = open('meetingminutes1.pdf','rb')
+
+#PdfFileReader is a function that will return a new pdf reader object for the pdf file we are using
+reader= PyPDF2.PdfFileReader(pdfFile)
+
+#retrive the number of pages inside the pdf object
+reader.numPages
+
+#use the method get page to retrive a page object from the pdf
+page= reader.getPage(0) #get the first page
+
+#extract the information in the page of choice of the pdf file
+page.extractText() #it is normal for the output not be perfect due to the complexity of the pdf format
+
+#get all the text from the pdf
+for pageNum in range(reader.numPages):
+ print(reader.getPage(pageNum).extractText())
+
+#the module PyPDF2 don't allow to change color of text, font etc but allows
+#to work at the page level, you can by example only extract even pages etc
+
+#in the next example will be examplified why PyPDF2 is usefull
+
+*****************Combining to PDF files*********************************
+
+import PyPDF2
+
+#open the two pdf files
+pdfFile = open('meetingminutes1.pdf','rb')
+
+pdf2File =open('meetingminutes2.pdf','rb')
+
+#create a reader object for the two pdf files
+reader1 = PyPDF2.PdfFileReader(pdfFile)
+reader2 = PyPDF2.PdfFileReader(pdf2File)
+
+#loop that will get all the text from the first pdf and create a new file and then
+#loop through the second pdf and attach the text to the end of the pdf
+
+#creates a pf that only exist in the python program and not in the harddrive
+#this pdf is blank, doesn't have any pages
+writer = PyPDF2.PdfFileWriter()
+
+#loop through the pages and add them to the end of the writer pdf
+for pageNum in range(reader1.numPages):
+ page = reader1.getPage(pageNum)
+ writer.addPage(page)
+
+for pageNum in range(reader2.numPages):
+ page = reader2.getPage(pageNum)
+ writer.addPage(page)
+
+#we need to use open the new file in write binary mode (wb)
+outputFile = open('combineminutes.pdf','wb')
+writer.write(outputFile) #save the new pdf to the harddrive
+
+#To clean up We need to close the pdfFiles
+outputFile.close()
+
+#To clean up We need to close the pdfFiles
+pdfFile.close()
+pdf2File.close()
+

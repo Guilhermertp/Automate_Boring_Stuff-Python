@@ -1,0 +1,62 @@
+******************RUN ALL IN THE PYTHON SHELL********************
+
+import openpyxl
+
+#creates a blank workbook and store the oject to a variable called wb
+wb = openpyxl.Workbook()
+
+#check the object
+wb
+
+#this workbook object only have one sheet we can verify
+wb.get_sheet_names()
+
+
+#get the sheetnames
+wb.sheetnames
+
+#get sheet by name
+sheet = wb['Sheet']
+sheet
+
+#since it is a blank sheet we use none compartion to confirm that by
+#example the first cell (A1) is blank, it should return true
+sheet['A1'].value == None
+
+#Add data to the cell A1 A2 or others
+sheet['A1'] = 42
+sheet['A2'] = 'Hello'
+
+
+#the workbook i created only exists in the computer memory in the
+#python program, to save it to the hard drive next using the save method (wb.save() )
+
+#before we save I'm going to change the working directory
+import os
+path = 'C:\\Users\\guilh\\Udemy courses\\1_Automate-Boring-Python\\4_Excel, Word, and PDF\\43. Editing Excel Spreadsheets'
+os.chdir(path) # change the current workink directory 
+os.getcwd() #check the current working directory
+
+wb.save('example_edit.xlsx') #save the workbook in the working directory
+
+#create a new sheet
+sheet2 = wb.create_sheet()
+
+#check the new sheet created
+wb.sheetnames
+
+#change the sheet name
+sheet2.title = 'My new Sheet Name'
+
+#check the new sheet name was changed
+wb.sheetnames
+
+#save to the excel
+wb.save('example_edit.xlsx')
+
+#by default the new sheet created is added to the end if we want to add in a specific
+#position we can do the follow
+wb.create_sheet(index=0, title='My other Sheet')
+
+#save the changes(new sheet in the first position)
+wb.save(example_edit.xlsx')

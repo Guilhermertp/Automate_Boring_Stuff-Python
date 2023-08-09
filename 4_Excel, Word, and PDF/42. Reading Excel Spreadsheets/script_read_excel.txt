@@ -1,0 +1,50 @@
+******************RUN ALL IN THE PYTHON SHELL********************
+
+import openpyxl
+import os
+
+#store the current directory
+path = os.getwd()
+
+#changes the current working directory to a specific path this is not necessary
+#since the path is for the current working directory
+
+os.chdir(path)
+
+#open excel file
+workbook = openpyxl.load_workbook('example.xlsx')
+
+type(workbook)
+
+#if you know the name of the sheet in the workbook
+#call using the command
+sheet = workbook['Sheet1'] #the udemmy course code is not updated!!!
+
+#if you don't know the name you can get the sheets names
+workbook.sheetnames
+
+type(sheet)
+
+#returns a cell object
+sheet['A1']
+
+#stores the cell object in a variable
+cell = sheet 
+
+#stores the cell object in a variable
+cell = sheet['B1']
+
+#return the value
+cell.value
+
+#1.returns a cell object
+sheet.cell(row=1, column=2)
+
+#2.the same as above but in another notation
+sheet['B1']
+
+#the method 1. is better then 2. in the case where we want to loop
+#and we don t want to create a string
+
+for i in range(1,8):
+ print(i, sheet.cell(row=i, column=2).value)

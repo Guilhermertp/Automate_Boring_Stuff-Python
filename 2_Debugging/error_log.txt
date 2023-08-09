@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "<ipython-input-48-2244d35ea068>", line 5, in <module>
+    raise Exception('This is the error message.')
+Exception: This is the error message.
+Traceback (most recent call last):
+  File "<ipython-input-6-2244d35ea068>", line 5, in <module>
+    raise Exception('This is the error message.')
+Exception: This is the error message.

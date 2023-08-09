@@ -1,0 +1,36 @@
+#import simple Mail Transfer Protocol library to be able to send emails
+import smtplib
+
+#create a connection object
+conn = smtplib.SMTP('smtp.gmail.com',587) in parenthesis first is the server and then the port number
+
+#connect to the server
+conn.ehlo() # if returns a number that starts with 200 it means the connection is ok
+
+#start the tls encryption so when whe send the password is safe
+conn.starttls()
+
+************Keep email passwprd safe****************************
+#before doing the login i'm going to create a text file in my working directory
+#in the text file will be the password for the email so it don't appear in the script
+
+file = open(r'C:\\Users\\guilh\Udemy courses\\1_Automate-Boring-Python\\5_Email\\46_Sending Emails\\pass.txt', encoding='utf8')
+password = file.read()
+
+#loggin input the username and the password
+conn.login('gp.jindrazen@gmail.com',password)
+
+#if the login gives error go to this link https://www.google.com/settings/security/lesssecureapps
+#and Allow less secure apps: ON
+
+
+#send a email, first it the from address and then the to adress, in the end is the body
+conn.sendmail('gp.jindrazen@gmail.com','guilherme_rtp@hotmail.com',' Subject: Test email \n\nThis is the test email\n to learn how to automate sending emails..') #the header end after two newlines(\n\n)
+
+#The email went to the junk, hotmail identified it as junk
+
+#disconnect from the SMTP Server
+conn.quit()
+
+#If you have to send a bunch of emails gmail have a limit of 150 emails per day
+#To solve the problem i should look into a commercial mailing list service

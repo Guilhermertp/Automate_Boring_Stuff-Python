@@ -1,0 +1,63 @@
+#install the followig modules
+#pip install imapclient
+#pip install pyzmail36
+
+import imapclient
+
+conn =imapclient.IMAPClient('imap.gmail.com', ssl=True) #ssl equal true to say we want ssl encrypton to imapclient
+
+file = open(r'C:\\Users\\guilh\Udemy courses\\1_Automate-Boring-Python\\5_Email\\46_Sending Emails\\pass.txt', encoding='utf8')
+password = file.read()
+
+#loggin input the username and the password
+print(conn.login('gp.jindrazen@gmail.com',password)) #use the print to confirm it succssefull logged in
+
+#select a folder, that will be 90% of the times the inbox
+#readonly=True so we don't delete emails by mistake
+print('\n',conn.select_folder('INBOX', readonly=True))
+
+
+#find emails using the search method, the syntax is a list of strings, ex. emails since Jan 2021
+#this will return a list of unique ids that i will store in a variable called UIDs
+UIDs = conn.search(['SINCE', '1-Jan-2021'])
+
+#this will print a list of integers that corrrespond to each email since the date selected
+print(UIDs)
+
+#To translate the UIDs into an actual email we are going to pick one of the integers(UIDs) printed above
+#We do that by calling the fetch method for the connection object, the first argument will be the UIDs
+from the list of UIDs that we printed above, the second argument will be the part(s) we want from the email
+rawMessage = conn.fetch([231],['BODY[]','FLAGS'] )
+
+
+#to parse the string in the raw message we are going to use the pyzmail module
+import pyzmail
+
+#This will return a pyzmail object that will store in a variable called message
+message= pyzmail.PyzMessage.factory(rawMessage[231][b'BODY[]'])
+
+#now after using the pyzmail we can use method to work easily in the message
+message.get_subject() #gets the subject of the email
+
+message.get_address('from')#get the address from is the message
+
+message.get_address('to')#get the address to is the message
+
+message.get_address('bcc')#get the black carbon copy
+
+#a text email is different from an html email, the second have pictures and different fonts embebed in it
+
+#check if the text part of the email is set to none, if text part exist it will not return none
+message.text_part
+
+#check if there is an html part
+message.html_part # if returns none to prove i can write message.html_part == None
+
+#get the all text message using the right codification (e.g. UTF-8)
+message.text_part.get_payload().decode('UTF-8')
+
+#returns a tupple value with all the folders names in my email
+conn.list_folders()
+
+********DELETE EMAILS*******************
+13:43 
